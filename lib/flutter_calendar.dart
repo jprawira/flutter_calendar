@@ -67,10 +67,16 @@ class CalendarState extends State<Calendar> {
   /// Set selected days to next n-workdays.
   void _updateSelectedDays() {
     DateTime _thisDay = new DateTime(now.year, now.month, now.day);
+    if (widget.daysSelected < 5) {
+      _selectedDays = Utils.workdaysInRange(
+        _thisDay, _thisDay.add(new Duration(days: widget.daysSelected)))
+        .toList();
+    } else {  
     _selectedDays = Utils.workdaysInRange(
         _thisDay, _thisDay.add(new Duration(days: widget.daysSelected + 1)))
         .toList();
-
+    }
+    
     while (_selectedDays.length < widget.daysSelected) {
       DateTime _finalDay = _selectedDays[_selectedDays.length - 1];
       DateTime _finalDayOffset = _finalDay.add(new Duration(days: 1));

@@ -21,15 +21,15 @@ class Calendar extends StatefulWidget {
 
   Calendar(
       {Key key,
-      this.onDateSelected,
-      this.onSelectedRangeChange,
-      this.isExpandable: false,
-      this.dayBuilder,
-      this.showTodayAction: false,
-      this.showChevronsToChangeRange: true,
-      this.showCalendarPickerIcon: false,
-      this.initialCalendarDateOverride,
-      @required this.daysSelected})
+        this.onDateSelected,
+        this.onSelectedRangeChange,
+        this.isExpandable: false,
+        this.dayBuilder,
+        this.showTodayAction: false,
+        this.showChevronsToChangeRange: true,
+        this.showCalendarPickerIcon: false,
+        this.initialCalendarDateOverride,
+        @required this.daysSelected})
       : super(key: key);
 
   @override
@@ -66,9 +66,9 @@ class CalendarState extends State<Calendar> {
 
   /// Set selected days to next n-workdays.
   void _updateSelectedDays() {
-    DateTime _thisDay = new DateTime(today.year, today.month, today.day);
+    DateTime _thisDay = new DateTime(now.year, now.month, now.day);
     _selectedDays = Utils.workdaysInRange(
-            _thisDay, _thisDay.add(new Duration(days: widget.daysSelected + 1)))
+        _thisDay, _thisDay.add(new Duration(days: widget.daysSelected + 1)))
         .toList();
 
     while (_selectedDays.length < widget.daysSelected) {
@@ -76,30 +76,23 @@ class CalendarState extends State<Calendar> {
       DateTime _finalDayOffset = _finalDay.add(new Duration(days: 1));
       if (_finalDayOffset.weekday % 6 == 0) {
         _selectedDays += Utils.workdaysInRange(
-                _finalDayOffset.add(new Duration(days: 2)),
-                _finalDayOffset.add(new Duration(
-                    days: 2 + widget.daysSelected - _selectedDays.length)))
+            _finalDayOffset.add(new Duration(days: 2)),
+            _finalDayOffset.add(new Duration(
+                days: 2 + widget.daysSelected - _selectedDays.length)))
             .toList();
       } else if (_finalDayOffset.weekday % 7 == 0) {
         _selectedDays += Utils.workdaysInRange(
-                _finalDayOffset.add(new Duration(days: 1)),
-                _finalDayOffset.add(new Duration(
-                    days: 1 + widget.daysSelected - _selectedDays.length)))
+            _finalDayOffset.add(new Duration(days: 1)),
+            _finalDayOffset.add(new Duration(
+                days: 1 + widget.daysSelected - _selectedDays.length)))
             .toList();
       } else {
         _selectedDays += Utils.workdaysInRange(
-                _finalDayOffset,
-                _finalDayOffset.add(new Duration(
-                    days: widget.daysSelected - _selectedDays.length)))
+            _finalDayOffset,
+            _finalDayOffset.add(new Duration(
+                days: widget.daysSelected - _selectedDays.length)))
             .toList();
       }
-      debugPrint("LAST DAY: " + _finalDay.weekday.toString());
-      debugPrint("ARRAY LENGTH: " + _selectedDays.length.toString());
-      debugPrint("DAYS SELECTED: " + widget.daysSelected.toString());
-    }
-
-    for (int i = 0; i < _selectedDays.length; i++) {
-      debugPrint("SELECTED: " + _selectedDays[i].toIso8601String());
     }
   }
 
@@ -187,10 +180,10 @@ class CalendarState extends State<Calendar> {
   List<Widget> calendarBuilder() {
     List<Widget> dayWidgets = [];
     List<DateTime> calendarDays =
-        isExpanded ? selectedMonthsDays : selectedWeeksDays;
+    isExpanded ? selectedMonthsDays : selectedWeeksDays;
 
     Utils.weekdays.forEach(
-      (day) {
+          (day) {
         dayWidgets.add(
           new CalendarTile(
             isDayOfWeek: true,
@@ -204,7 +197,7 @@ class CalendarState extends State<Calendar> {
     bool monthEnded = false;
 
     calendarDays.forEach(
-      (day) {
+          (day) {
         if (monthStarted && day.day == 01) {
           monthEnded = true;
         }
@@ -480,7 +473,7 @@ class ExpansionCrossFade extends StatelessWidget {
         secondCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
         sizeCurve: Curves.decelerate,
         crossFadeState:
-            isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
         duration: const Duration(milliseconds: 300),
       ),
     );

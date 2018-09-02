@@ -427,6 +427,7 @@ class CalendarState extends State<Calendar> {
   }
 
   // TODO: DISABLE DATE PICKING FOR PREVIOUS DAYS, HOLIDAYS, AND WEEKEND
+  // TODO: ADD LOGIC FOR PICKING DATES
   void handleSelectedDateAndUserCallback(DateTime day) {
     var firstDayOfCurrentWeek = Utils.firstDayOfWeek(day);
     var lastDayOfCurrentWeek = Utils.lastDayOfWeek(day);

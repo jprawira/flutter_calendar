@@ -59,12 +59,6 @@ class CalendarState extends State<Calendar> {
     if (widget.initialCalendarDateOverride != null)
       today = widget.initialCalendarDateOverride;
     selectedMonthsDays = Utils.daysInMonth(today);
-    var firstDayOfCurrentWeek = Utils.firstDayOfWeek(today);
-    var lastDayOfCurrentWeek = Utils.lastDayOfWeek(today);
-    selectedWeeksDays =
-        Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
-            .toList()
-            .sublist(0, 7);
     _selectedDate = today;
 
     displayMonth = Utils.formatMonth(Utils.firstDayOfMonth(today));
@@ -78,20 +72,30 @@ class CalendarState extends State<Calendar> {
         .toList();
 
     while (_selectedDays.length < widget.daysSelected) {
-      DateTime _finalDay = _selectedDays.removeLast();
-      if (_finalDay.weekday % 6 == 0) {
-        /*_selectedDays += Utils.workdaysInRange(
-          _finalDay.add(new Duration(days: 2)), _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
-          .toList();*/
-      } else if (_finalDay.weekday % 7 == 0) {
-        /*_selectedDays += Utils.workdaysInRange(
-          _finalDay.add(new Duration(days: 1)), _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
-          .toList();*/
+      DateTime _finalDay = _selectedDays[_selectedDays.length - 1];
+      DateTime _finalDayOffset = _finalDay.add(new Duration(days: 1));
+      if (_finalDayOffset.weekday % 6 == 0) {
+        _selectedDays += Utils.workdaysInRange(
+                _finalDayOffset.add(new Duration(days: 2)),
+                _finalDayOffset.add(new Duration(
+                    days: 2 + widget.daysSelected - _selectedDays.length)))
+            .toList();
+      } else if (_finalDayOffset.weekday % 7 == 0) {
+        _selectedDays += Utils.workdaysInRange(
+                _finalDayOffset.add(new Duration(days: 1)),
+                _finalDayOffset.add(new Duration(
+                    days: 1 + widget.daysSelected - _selectedDays.length)))
+            .toList();
       } else {
         _selectedDays += Utils.workdaysInRange(
-          _finalDay, _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
-          .toList();
+                _finalDayOffset,
+                _finalDayOffset.add(new Duration(
+                    days: widget.daysSelected - _selectedDays.length)))
+            .toList();
       }
+      debugPrint("LAST DAY: " + _finalDay.weekday.toString());
+      debugPrint("ARRAY LENGTH: " + _selectedDays.length.toString());
+      debugPrint("DAYS SELECTED: " + widget.daysSelected.toString());
     }
 
     for (int i = 0; i < _selectedDays.length; i++) {

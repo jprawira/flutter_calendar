@@ -80,13 +80,13 @@ class CalendarState extends State<Calendar> {
     while (_selectedDays.length < widget.daysSelected) {
       DateTime _finalDay = _selectedDays.removeLast();
       if (_finalDay.weekday % 6 == 0) {
-        _selectedDays += Utils.workdaysInRange(
+        /*_selectedDays += Utils.workdaysInRange(
           _finalDay.add(new Duration(days: 2)), _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
-          .toList();
+          .toList();*/
       } else if (_finalDay.weekday % 7 == 0) {
-        _selectedDays += Utils.workdaysInRange(
+        /*_selectedDays += Utils.workdaysInRange(
           _finalDay.add(new Duration(days: 1)), _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
-          .toList();
+          .toList();*/
       } else {
         _selectedDays += Utils.workdaysInRange(
           _finalDay, _finalDay.add(new Duration(days: widget.daysSelected - _selectedDays.length)))
